@@ -51,22 +51,22 @@
                                     :rules="rules.descriptionRule"
                                 ></v-textarea>
                             </v-col>
-<!--                            <v-col cols="12">-->
-<!--                                <p>Fecha limite</p>-->
-<!--                                <v-text-field-->
-<!--                                    v-model="activity.date_fin"-->
-<!--                                    required-->
-<!--                                    dense-->
-<!--                                    dark-->
-<!--                                    type="date"-->
-<!--                                    variant='outlined'-->
-<!--                                    color="#4a4cf6"-->
-<!--                                    :rules="rules.date_finRule"-->
-<!--                                ></v-text-field>-->
-<!--                            </v-col>-->
+                            <v-col cols="12">
+                                <p>Archivo de ayuda (Opcional)</p>
+                                <v-file-input
+                                    v-model="file"
+                                    required
+                                    dense
+                                    dark
+                                    clearable
+                                    variant='outlined'
+                                    color="#4a4cf6"
+                                ></v-file-input>
+                            </v-col>
                             <v-col cols="12">
                                 <p>Fecha limite</p>
-                                <VueDatePicker v-model="activity.date_fin"></VueDatePicker>
+                                <VueDatePicker v-model="activity.date_fin"
+                                ></VueDatePicker>
                             </v-col>
                         </v-row>
                     </v-form>
@@ -84,10 +84,11 @@
 <script>
 import axios from "axios";
 import TimePicker from "../../commons/TimePicker.vue";
+
 export default {
     name: "FormActivity",
     props: ['courseId'],
-    components:{ TimePicker},
+    components: {TimePicker},
     data() {
         return {
             dialog: false,
@@ -98,7 +99,6 @@ export default {
                 title: "",
                 date_fin: '',
                 description: '',
-                // time_fin: '',
             },
             rules: {
                 titleRule: [(v) => !!v || "El titulo es requerido"],
@@ -126,6 +126,7 @@ export default {
                 formData.append('title', this.activity.title);
                 formData.append('description', this.activity.description);
                 formData.append('fk_id_course', this.courseId);
+                formData.append('file', this.file[0]);
 
                 // Obtener la fecha y hora ingresada por el usuario
                 const fechaHora = new Date(this.activity.date_fin);
@@ -138,10 +139,7 @@ export default {
 
                 const formattedFechaHora = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')} ${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
 
-                console.log(formattedFechaHora); // Resultado: "2023-06-01 13:49"
-
                 formData.append('limit_date', formattedFechaHora);
-                // formData.append('fk_id_unit', this.material.fk_id_unit);
                 console.log(new Date(this.activity.date_fin).toISOString())
                 axios
                     .post(url, formData)

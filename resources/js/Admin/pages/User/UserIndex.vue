@@ -7,7 +7,7 @@
         :url="url"
         :updateFlag="updateFlag"
         :url-state="urlState"
-        :toggle-switch="false"
+        :toggle-switch="true"
     >
         <template v-slot:action-slot="data">
             <FormUser :update="true" :data-update="data" @reload-grid="handleReloadGrid"></FormUser>
@@ -52,7 +52,7 @@ export default {
                 },
             ],
             url: 'admin.user.index.content',
-            urlState: 'admin.course.status'
+            urlState: 'admin.user.status'
         }
     },
     methods: {

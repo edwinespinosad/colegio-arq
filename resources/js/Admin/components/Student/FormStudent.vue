@@ -1,5 +1,5 @@
 <template>
-    <div class="text-end">
+    <div class="text-center">
         <v-dialog v-model="dialog" width="500">
             <template v-slot:activator="{ props }">
                 <v-icon
@@ -13,18 +13,18 @@
                 <button
                     v-else
                     v-bind="props"
-                    class="btn text-end text-white bg-blue-primary"
+                    class="btn position-absolute top-2 end-0 text-white bg-blue-primary"
                 >
-                    Agregar examen
+                    Agregar estudiante
                 </button>
             </template>
 
-            <v-card>
+            <v-card color="">
                 <v-card-text class="p-4">
                     <v-row>
                         <v-col cols="11">
                             <h5 class="">
-                                {{ this.update ? "Editar examen" : "Agregar examen" }}
+                                {{ this.update ? "Editar estudiante" : "Agregar estudiante" }}
                             </h5>
                         </v-col>
                         <v-col cols="1" @click="dialog = false">
@@ -36,70 +36,92 @@
                             <v-col cols="6">
                                 <p>Nombre</p>
                                 <v-text-field
-                                    v-model="exam.name"
+                                    v-model="user.name"
+                                    color="#4a4cf6"
                                     required
                                     dense
                                     dark
                                     variant='outlined'
-                                    color="#4a4cf6"
                                     :rules="rules.nameRule"
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="6">
-                                <p>Descripcion</p>
+                                <p>Apellido Paterno</p>
                                 <v-text-field
-                                    v-model="exam.description"
+                                    v-model="user.middle_name"
                                     required
                                     dense
+                                    color="#4a4cf6"
+
                                     dark
                                     variant='outlined'
-                                    color="#4a4cf6"
-                                    :rules="rules.descriptionRule"
+                                    :rules="rules.middle_nameRule"
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="6">
-                                <p>Link</p>
+                                <p>Apellido Materno</p>
                                 <v-text-field
-                                    v-model="exam.link"
+                                    v-model="user.last_name"
                                     required
                                     dense
+                                    color="#4a4cf6"
                                     dark
                                     variant='outlined'
-                                    :rules="rules.linkRule"
-                                    color="#4a4cf6"
+                                    :rules="rules.last_nameRule"
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="6">
-                                <p>Fecha Inicial</p>
+                                <p>Edad</p>
                                 <v-text-field
-                                    v-model="exam.date_ini"
-                                    required
+                                    v-model="user.age"
                                     dense
-                                    dark
-                                    type="date"
-                                    variant='outlined'
+                                    type="number"
                                     color="#4a4cf6"
-                                    :rules="rules.date_iniRule"
+                                    dark
+                                    variant='outlined'
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="6">
-                                <p>Fecha Final</p>
+                                <p>Telefono</p>
                                 <v-text-field
-                                    v-model="exam.date_fin"
+                                    v-model="user.phone"
+                                    dense
+                                    type="number"
+                                    color="#4a4cf6"
+                                    dark
+                                    variant='outlined'
+                                ></v-text-field>
+                            </v-col>
+                            <v-col cols="6">
+                                <p>Correo electronico</p>
+                                <v-text-field
+                                    v-model="user.email"
                                     required
                                     dense
                                     dark
-                                    type="date"
                                     variant='outlined'
                                     color="#4a4cf6"
-                                    :rules="rules.date_finRule"
+                                    :rules="rules.emailRule"
+                                ></v-text-field>
+                            </v-col>
+                            <v-col cols="6">
+                                <p>Contraseña</p>
+                                <v-text-field
+                                    v-model="user.password"
+                                    required
+                                    dense
+                                    dark
+                                    variant='outlined'
+                                    color="#4a4cf6"
+                                    type="password"
+                                    :rules="rules.passwordRule"
                                 ></v-text-field>
                             </v-col>
                         </v-row>
                     </v-form>
                     <div class="text-center">
                         <button class="btn text-dark bg-blue-primary text-white" @click="save()">
-                            {{ this.update ? "Guardar examen" : "Agregar examen" }}
+                            {{ this.update ? "Guardar estudiante" : "Agregar estudiante" }}
                         </button>
                     </div>
                 </v-card-text>
@@ -112,7 +134,7 @@
 import axios from "axios";
 
 export default {
-    name: "FormExam",
+    name: "FormStudent",
     props: {
         update: Boolean,
         dataUpdate: Object,
@@ -121,25 +143,29 @@ export default {
         return {
             dialog: false,
             valid: true,
-            exam: {
+            user: {
                 id: "",
                 name: "",
-                duration: "",
-                price: "",
-                benefits: "",
+                last_name: "",
+                middle_name: "",
+                age: "",
+                phone: "",
+                email: '',
+                password: "",
             },
             rules: {
                 nameRule: [(v) => !!v || "El nombre es requerido"],
-                descriptionRule: [(v) => !!v || "La descripcion es requerida"],
-                linkRule: [(v) => !!v || "El link es requerido"],
-                date_iniRule: [(v) => !!v || "La fecha es requerida"],
-                date_finRule: [(v) => !!v || "La fecha es requerida"],
+                last_nameRule: [(v) => !!v || "El apellido es requerido"],
+                middle_nameRule: [(v) => !!v || "El apellido es requerido"],
+                emailRule: [(v) => !!v || "El correo electronico es requerido"],
+                passwordRule: [(v) => !!v || "La contraseña es requerida"],
             },
+            loading: false,
         }
     },
     created() {
-        this.URL_CREATE_EXAM = route('admin.exam.create');
-        this.URL_UPDATE_EXAM = route('admin.exam.update', {examId: 'FAKE_ID'});
+        this.URL_CREATE_USER = route('admin.student.create');
+        this.URL_UPDATE_USER = route('admin.student.update', {userId: 'FAKE_ID'});
     },
     methods: {
         close() {
@@ -148,32 +174,36 @@ export default {
             this.$refs.form.reset();
         },
         getData(data) {
-            this.exam.id = data.id;
-            this.exam.name = data.name;
-            this.exam.description = data.description;
-            this.exam.link = data.link;
-            this.exam.date_ini = data.date_ini.split('T')[0];
-            this.exam.date_fin = data.date_fin.split('T')[0];
+            this.user.id = data.id;
+            this.user.name = data.name;
+            this.user.last_name = data.last_name;
+            this.user.middle_name = data.middle_name;
+            this.user.age = data.age;
+            this.user.phone = data.phone;
+            this.user.email = data.email;
+            this.user.password = data.password;
         },
         async save() {
             const {valid} = await this.$refs.form.validate();
             if (valid) {
-                let url = !this.update ? this.URL_CREATE_EXAM : this.URL_UPDATE_EXAM.replace('FAKE_ID', this.dataUpdate.id);
+                let url = !this.update ? this.URL_CREATE_USER : this.URL_UPDATE_USER.replace('FAKE_ID', this.dataUpdate.id);
 
                 let formData = new FormData();
-                formData.append('id', this.exam.id);
-                formData.append('name', this.exam.name);
-                formData.append('description', this.exam.description);
-                formData.append('link', this.exam.link);
-                formData.append('date_ini', this.exam.date_ini);
-                formData.append('date_fin', this.exam.date_fin);
+                formData.append('id', this.user.id);
+                formData.append('name', this.user.name);
+                formData.append('last_name', this.user.last_name);
+                formData.append('middle_name', this.user.middle_name);
+                formData.append('age', this.user.age);
+                formData.append('phone', this.user.phone);
+                formData.append('email', this.user.email);
+                formData.append('password', this.user.password);
 
                 axios
                     .post(url, formData)
                     .then((response) => {
                         if (response.data.success) {
                             this.$swal.fire({
-                                title: !this.update ? "Examen agregado!" : 'Examen actualizado!',
+                                title: !this.update ? "Estudiante agregado!" : 'Estudiante actualizado!',
                                 icon: "success",
                                 confirmButtonText: "Ok",
                                 timer: 1500,
@@ -194,7 +224,6 @@ export default {
             }
         },
     },
-
 }
 </script>
 

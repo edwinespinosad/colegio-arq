@@ -18,14 +18,24 @@ class LoginController extends Controller
             'password' => $password,
         ];
 
-        $user = Student::where('email', $email)->get();
+        $user = Student::where('email', $email)
+            ->get();
 
         if (\Auth::guard('student')->attempt($loginData, false)) {
-            return response()->json([
-                "success" => true,
-                "message" => "Ok",
-                "user" => $user
-            ]);
+            if (!$user[0]->active) {
+                return response()->json([
+                    "success" => false,
+                    "message" => "Error",
+                    "user" => $user,
+                    "active" => false,
+                ]);
+            } else {
+                return response()->json([
+                    "success" => true,
+                    "message" => "Ok",
+                    "user" => $user
+                ]);
+            }
         } else {
             return response()->json([
                 "success" => false,

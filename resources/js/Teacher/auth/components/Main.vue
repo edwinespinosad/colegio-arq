@@ -16,7 +16,7 @@
           cols="6"
           class="p-5 d-flex flex-column justify-content-center align-items-center"
         >
-          <h1 class="pb-5 font-weight-bold text-center">¡Bienvenido!</h1>
+          <h1 class="pb-5 font-weight-bold text-center">¡Bienvenido Profesor!</h1>
           <p class="">Correo electrónico</p>
           <v-text-field
             v-model="form.email"
@@ -33,7 +33,7 @@
             dense
             dark
             variant="outlined"
-            @click:append="showPassword = !showPassword"
+            @click:append-inner="showPassword = !showPassword"
             :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
             class="w-100"
           ></v-text-field>

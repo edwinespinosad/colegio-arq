@@ -15,6 +15,15 @@
             <p>Fecha limite: {{ content.limit_date }}</p>
         </v-col>
 
+        <v-col cols="12" v-if="content.help_material !== null">
+            <p>Material de apoyo</p>
+            <v-btn color="blue-darken-4" theme="dark" :ripple="false"
+                   :href="content.help_material"
+                   target="_blank">
+                {{ content.help_material !== null ? content.help_material.split('/')[3] : ''}}
+            </v-btn>
+        </v-col>
+
         <v-col cols="12">
             <p>Mi trabajo</p>
 

@@ -19,6 +19,22 @@ Route::post('/user/create',
 Route::post('/user/update/{userId}',
     [UserController::class, 'updatePost'])
     ->name('admin.user.update');
+
+Route::get('/user/status/{id}',
+    [UserController::class, 'status'])
+    ->name('admin.user.status');
+/*************** STUDENT *********************/
+Route::post('/student/create',
+    [StudentController::class, 'createPost'])
+    ->name('admin.student.create');
+
+Route::post('/student/update/{userId}',
+    [StudentController::class, 'updatePost'])
+    ->name('admin.student.update');
+
+Route::get('/student/status/{id}',
+    [StudentController::class, 'status'])
+    ->name('admin.student.status');
 /*************** EXAM *********************/
 Route::get('/exam/index/content',
     [ExamController::class, 'indexContent'])
@@ -45,7 +61,7 @@ Route::post('/course/update/{courseId}',
     [CourseController::class, 'updatePost'])
     ->name('admin.course.update');
 
-Route::get('/course/status/{courseId}',
+Route::get('/course/status/{id}',
     [CourseController::class, 'status'])
     ->name('admin.course.status');
 

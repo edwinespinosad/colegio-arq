@@ -22,9 +22,11 @@ use Illuminate\Foundation\Auth\User as Authenticable;
  * @property string|null $phone
  * @property string $email
  * @property string $password
+ * @property bool $active
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  *
+ * @property Collection|StudentActivityDelivery[] $student_activity_deliveries
  * @property Collection|Course[] $courses
  * @property Collection|Group[] $groups
  *
@@ -35,7 +37,8 @@ class Student extends Authenticable
 	protected $table = 'student';
 
 	protected $casts = [
-		'age' => 'int'
+		'age' => 'int',
+		'active' => 'bool'
 	];
 
 	protected $hidden = [
@@ -49,8 +52,14 @@ class Student extends Authenticable
 		'age',
 		'phone',
 		'email',
-		'password'
+		'password',
+		'active'
 	];
+
+	public function student_activity_deliveries()
+	{
+		return $this->hasMany(StudentActivityDelivery::class, 'fk_id_student');
+	}
 
 	public function courses()
 	{

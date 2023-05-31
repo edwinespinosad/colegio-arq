@@ -70,6 +70,17 @@ class UnitController extends Controller
         $activity->description = $request->get('description');
         $activity->limit_date = Carbon::createFromFormat('Y-m-d H:i', ($request->get('limit_date')));
 
+        $file = [];
+        $tempFile = $request->file('file');
+        if (isset($tempFile)) {
+            if ($activity->help_material != null) {
+                UploadFiles::deleteFile($activity->help_material);
+            }
+            $file[] = $tempFile;
+            $url = UploadFiles::storeFile($file[0], $activity->id, 'colegio_material_apoyo',);
+            $activity->help_material = $url;
+        }
+
         if (!$activity->save()) {
             return response()->json([
                 'success' => false,

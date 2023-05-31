@@ -33,7 +33,7 @@ export default {
                 .then((result) => {
                     if (result.isConfirmed) {
                         axios
-                            .get(route(this.url, {courseId: this.id}))
+                            .get(route(this.url, {id: this.id}))
                             .then((response) => {
                                 if (response.data.success) {
                                     this.$swal.fire({

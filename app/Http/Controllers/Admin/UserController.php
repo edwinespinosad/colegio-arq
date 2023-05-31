@@ -92,10 +92,10 @@ class UserController extends Controller
         ]);
     }
 
-    public function status($userId)
+    public function status($userId): \Illuminate\Http\JsonResponse
     {
 
-        $user = Course::find($userId);
+        $user = User::find($userId);
 
         $user->active = !$user->active;
 
@@ -103,7 +103,7 @@ class UserController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Curso actualizado correctamente'
+                'message' => 'Usuario actualizado correctamente'
             ]);
 
         } else {

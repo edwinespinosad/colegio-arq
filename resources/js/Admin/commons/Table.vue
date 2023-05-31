@@ -43,6 +43,7 @@
                                 :active="row.active === true"
                                 :url="urlState"
                                 :id="row.id"
+                                :config="configState"
                             ></Toggle>
                             <slot name="action-slot" v-bind="row"></slot>
                         </div>
@@ -55,7 +56,7 @@
         <nav aria-label="..." v-if="dataPag.length !== 0">
             <ul class="pagination justify-content-center">
                 <li class="page-item" :class="paginaActual === 1 ? 'disabled' : ''">
-                    <a class="page-link" @click="getPreviousPage()">Previous</a>
+                    <a class="page-link" @click="getPreviousPage()">Anterior</a>
                 </li>
                 <li v-for="pagina in totalPages()" :key="pagina" class="page-item">
                     <a
@@ -69,7 +70,7 @@
                     class="page-item"
                     :class="paginaActual === totalPages() ? 'disabled' : ''"
                 >
-                    <a class="page-link" @click="getNextPage()">Next</a>
+                    <a class="page-link" @click="getNextPage()">Siguiente</a>
                 </li>
             </ul>
         </nav>
@@ -91,6 +92,7 @@ export default {
         urlState: String,
         updateFlag: Boolean,
         config: Object,
+        configState: Object,
     },
     data: () => ({
         data: [],

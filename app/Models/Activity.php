@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property string $title
  * @property string $description
+ * @property string|null $help_material
  * @property Carbon $limit_date
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -35,6 +36,7 @@ class Activity extends Model
 	protected $fillable = [
 		'title',
 		'description',
+		'help_material',
 		'limit_date'
 	];
 
