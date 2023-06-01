@@ -23,6 +23,12 @@ export default {
                     route: "users",
                 },
                 {
+                    icon: "mdi-account",
+                    iconActive: "mdi-file-update",
+                    text: "Profesores",
+                    route: "teachers",
+                },
+                {
 
                     icon: "mdi-account-box",
                     iconActive: "mdi-file-update",

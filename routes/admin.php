@@ -5,7 +5,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ExamController;
 use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\StudentController;
-//use App\Http\Controllers\Admin\NoticeController;
+use App\Http\Controllers\Admin\TeacherController;
 /*************** USER *********************/
 
 Route::get('/user/index/content',
@@ -23,6 +23,30 @@ Route::post('/user/update/{userId}',
 Route::get('/user/status/{id}',
     [UserController::class, 'status'])
     ->name('admin.user.status');
+/*************** TEACHER *********************/
+Route::get('/teacher/index/content',
+    [TeacherController::class, 'indexContent'])
+    ->name('admin.teacher.index.content');
+
+Route::post('/teacher/create',
+    [TeacherController::class, 'createPost'])
+    ->name('admin.teacher.create');
+
+Route::post('/teacher/update/{userId}',
+    [TeacherController::class, 'updatePost'])
+    ->name('admin.teacher.update');
+
+Route::get('/teacher/status/{id}',
+    [TeacherController::class, 'status'])
+    ->name('admin.teacher.status');
+
+Route::get('/teacher/courses',
+    [TeacherController::class, 'getCourses'])
+    ->name('admin.teacher.all.courses');
+
+Route::post('/teacher/assign-course',
+    [TeacherController::class, 'assignCourse'])
+    ->name('admin.teacher.assign.course');
 /*************** STUDENT *********************/
 Route::post('/student/create',
     [StudentController::class, 'createPost'])

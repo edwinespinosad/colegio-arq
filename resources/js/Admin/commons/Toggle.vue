@@ -1,5 +1,5 @@
 <template>
-    <v-switch v-model="isActive" inset @click="state()" color="blue-primary"></v-switch>
+    <v-switch v-model="isActive" inset @click="state()" color="blue-primary" density="compact" flat></v-switch>
 </template>
 
 <script>

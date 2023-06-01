@@ -3,51 +3,39 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Course;
+use App\Models\TeacherHasCourse;
 use Illuminate\Http\Request;
-use App\Models\User;
-class UserController extends Controller
+use App\Models\Student;
+use App\Models\Teacher;
+
+class TeacherController extends Controller
 {
     public function indexContent(Request $request): \Illuminate\Http\JsonResponse
     {
-        $page = $request->get('page', 0);
-        $size = $request->get('size', 10);
-        $skip = $page * $size;
-
         $filterName = $request->get('filter-name', null);
         $filterPhone = $request->get('filter-phone', null);
         $filterEmail = $request->get('filter-email', null);
 
-        $query = User::orderBy('id', 'asc');
+        $query = Teacher::with('courses');
 
         if ($filterName !== null) {
             $query->where('name', "like", "%" . $filterName . "%");
         }
 
-        if ($filterPhone !== null) {
-            $query->where('phone', "like", "%" . $filterPhone . "%");
-        }
-
-        if ($filterEmail !== null) {
-            $query->where('email', "like", "%" . $filterEmail . "%");
-        }
-
         $count = $query->count();
-        $users = $query
-            ->limit($size)
-            ->skip($skip)
+        $teachers = $query
             ->get();
 
         return response()->json([
-            'page' => $page,
-            'size' => $size,
             'count' => $count,
-            'data' => $users,
+            'data' => $teachers,
         ]);
     }
 
     public function createPost(Request $request): \Illuminate\Http\JsonResponse
     {
-        $user = new User();
+        $user = new Teacher();
         $user->name = $request->get('name');
         $user->middle_name = $request->get('middle_name');
         $user->last_name = $request->get('last_name');
@@ -59,7 +47,7 @@ class UserController extends Controller
         if (!$user->save()) {
             return response()->json([
                 'success' => false,
-                'message' => 'No se pudo guardar el curso'
+                'message' => 'No se pudo guardar el profesor'
             ]);
         }
         return response()->json([
@@ -70,11 +58,12 @@ class UserController extends Controller
 
     public function updatePost(Request $request, $userId): \Illuminate\Http\JsonResponse
     {
-        $user = User::find($userId);
+        $user = Teacher::find($userId);
 
         $user->name = $request->get('name');
         $user->middle_name = $request->get('middle_name');
         $user->last_name = $request->get('last_name');
+
         if ($request->get('age') != 'null') {
             $user->age = $request->get('age');
         }
@@ -97,7 +86,7 @@ class UserController extends Controller
     public function status($userId): \Illuminate\Http\JsonResponse
     {
 
-        $user = User::find($userId);
+        $user = Teacher::find($userId);
 
         $user->active = !$user->active;
 
@@ -105,7 +94,7 @@ class UserController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Usuario actualizado correctamente'
+                'message' => 'Curso actualizado correctamente'
             ]);
 
         } else {
@@ -116,5 +105,31 @@ class UserController extends Controller
         }
     }
 
+    public function getCourses(): \Illuminate\Http\JsonResponse
+    {
+        $courses = Course::where('active', '1')
+            ->get();
 
+        return response()->json([
+            'data' => $courses
+        ]);
+    }
+
+    public function assignCourse(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $user = new TeacherHasCourse();
+        $user->fk_id_course = $request->get('fk_id_course');
+        $user->fk_id_teacher = $request->get('fk_id_teacher');
+
+        if (!$user->save()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No se pudo asignar'
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Guardado correctamente'
+        ]);
+    }
 }

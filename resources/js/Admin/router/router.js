@@ -4,9 +4,11 @@ const UserIndex = () => import('../pages/User/UserIndex.vue')
 const StudentIndex = () => import('../pages/Student/StudentIndex.vue')
 const ExamIndex = () => import('../pages/Exam/ExamIndex.vue')
 const CourseIndex = () => import('../pages/Course/CourseIndex.vue')
+const TeacherIndex = () => import('../pages/Teacher/TeacherIndex.vue')
 
 const routes = [
     { path: '/admin/users', name: 'users', component: UserIndex },
+    { path: '/admin/teachers', name: 'teachers', component: TeacherIndex },
     { path: '/admin/students', name: 'students', component: StudentIndex },
     { path: '/admin/exams', name: 'exams', component: ExamIndex },
     { path: '/admin/courses', name: 'courses', component: CourseIndex },

@@ -56,6 +56,15 @@ class Student extends Authenticable
 		'active'
 	];
 
+    protected $appends = [
+        'full_last_name'
+    ];
+
+    public function getFullLastNameAttribute()
+    {
+        return $this->middle_name . ' ' . $this->last_name;
+    }
+
 	public function student_activity_deliveries()
 	{
 		return $this->hasMany(StudentActivityDelivery::class, 'fk_id_student');

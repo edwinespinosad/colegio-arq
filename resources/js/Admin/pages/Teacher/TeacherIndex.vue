@@ -1,6 +1,7 @@
 <template>
-    <h1>Estudiantes</h1>
-    <FormStudent :update="false" @reload-grid="handleReloadGrid"></FormStudent>
+    <h1>Usuarios</h1>
+    <FormTeacher :update="false" @reload-grid="handleReloadGrid"></FormTeacher>
+
     <Table
         :columns="columns"
         :url="url"
@@ -8,6 +9,7 @@
         :url-state="urlState"
         :toggle-switch="true"
     >
+
         <template v-slot:courses="{data}" class="d-flex flex-column">
             <div class="d-flex flex-column align-items-center justify-content-center">
                 <p v-for="(item,i) in data.courses" :key="i">
@@ -17,20 +19,23 @@
         </template>
 
         <template v-slot:action-slot="data">
-            <FormStudent :update="true" :data-update="data" @reload-grid="handleReloadGrid"></FormStudent>
+            <TeacherHasCourse :teacherData="data" @reload-grid="handleReloadGrid"></TeacherHasCourse>
+            <FormTeacher :update="true" :data-update="data" @reload-grid="handleReloadGrid"></FormTeacher>
         </template>
     </Table>
 </template>
 
 <script>
 import Table from "../../commons/Table.vue";
-import FormStudent from "../../components/Student/FormStudent.vue";
+import FormTeacher from "../../components/Teacher/FormTeacher.vue";
+import TeacherHasCourse from "../../components/Teacher/TeacherHasCourse.vue";
 
 export default {
-    name: "StudentIndex",
-    components: {FormStudent, Table},
+    name: "TeacherIndex",
+    components: {TeacherHasCourse, FormTeacher, Table},
     data() {
         return {
+            updateFlag: false,
             columns: [
                 {
                     label: '#',
@@ -45,6 +50,10 @@ export default {
                     name: "full_last_name",
                 },
                 {
+                    label: "Edad",
+                    name: "age",
+                },
+                {
                     label: "Telefono",
                     name: "phone",
                 },
@@ -53,14 +62,13 @@ export default {
                     name: "email",
                 },
                 {
-                    label: "Cursos",
+                    'label': 'Cursos',
                     name: "courses",
                     slot_name: 'courses'
-                },
+                }
             ],
-            url: 'admin.student.index.content',
-            urlState: 'admin.student.status',
-            updateFlag: false,
+            url: 'admin.teacher.index.content',
+            urlState: 'admin.teacher.status'
         }
     },
     methods: {
@@ -68,8 +76,9 @@ export default {
             this.updateFlag = !this.updateFlag;
         }
     },
-};
+}
 </script>
 
 <style scoped>
+
 </style>

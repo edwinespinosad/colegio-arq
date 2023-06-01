@@ -22,6 +22,7 @@ use Illuminate\Foundation\Auth\User as Authenticable;
  * @property string|null $phone
  * @property string $email
  * @property string $password
+ * @property bool $active
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  *
@@ -35,7 +36,8 @@ class Teacher extends Authenticable
 	protected $table = 'teacher';
 
 	protected $casts = [
-		'age' => 'int'
+		'age' => 'int',
+		'active' => 'bool'
 	];
 
 	protected $hidden = [
@@ -49,8 +51,18 @@ class Teacher extends Authenticable
 		'age',
 		'phone',
 		'email',
-		'password'
+		'password',
+		'active'
 	];
+
+    protected $appends = [
+        'full_last_name'
+    ];
+
+    public function getFullLastNameAttribute()
+    {
+        return $this->middle_name . ' ' . $this->last_name;
+    }
 
 	public function courses()
 	{

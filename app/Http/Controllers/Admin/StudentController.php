@@ -60,7 +60,9 @@ class StudentController extends Controller
         $user->name = $request->get('name');
         $user->middle_name = $request->get('middle_name');
         $user->last_name = $request->get('last_name');
-        $user->age = $request->get('age');
+        if ($request->get('age') != 'null') {
+            $user->age = $request->get('age');
+        }
         $user->phone = $request->get('phone');
         $user->email = $request->get('email');
         $user->password = bcrypt($request->get('password'));

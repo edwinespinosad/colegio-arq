@@ -36,7 +36,7 @@
                         </div>
                     </td>
                     <td class="align-middle">
-                        <div class="d-flex justify-content-evenly align-items-center">
+                        <div class="d-flex justify-content-between align-items-center">
 
                             <Toggle
                                 v-if="toggleSwitch"
